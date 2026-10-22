@@ -30,11 +30,11 @@ export class ProductsServiceService {
 
   updateProduct(id: number, products: Products): Observable<Products>
   {
-    return this.httpClient.put<Products>(`${environment.apiUrl}/${id}`, products);
+    return this.httpClient.put<Products>(`${environment.apiUrl}/Products/${id}`, products);
   }
 
   deleteProduct(id: number): Observable<void>
   {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/Product/${id}`);
+    return this.httpClient.delete<void>(`${environment.apiUrl}/Products/${id}`);
   }
 }
