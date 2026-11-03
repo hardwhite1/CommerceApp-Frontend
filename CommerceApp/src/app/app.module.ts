@@ -13,7 +13,8 @@ import { CheckoutComponent } from './cart/checkout/checkout.component';
 import { OrdersComponent } from './cart/orders/orders.component';
 import { PaymentsComponent } from './payments/payments/payments.component';
 import { WelcomePageComponent } from './welcome/welcome-page/welcome-page.component';
-
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +31,9 @@ import { WelcomePageComponent } from './welcome/welcome-page/welcome-page.compon
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
