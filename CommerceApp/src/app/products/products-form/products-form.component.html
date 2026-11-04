@@ -1,1 +1,67 @@
-<p>products-form works!</p>
+<section class="product-form-card">
+    <header class="form-header">
+        <p class="form-eyebrow">PRODUCT CATALOG</p>
+        <h2>{{ editingId ? 'Edit product' : 'Create a product' }}</h2>
+        <p class="form-intro">Add the details customers need to discover your product.</p>
+    </header>
+
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="product-form">
+        <div class="form-field">
+            <label for="name">Name</label>
+            <input id="name" type="text" formControlName="name" placeholder="e.g. Everyday Backpack" required>
+        </div>
+
+        <div class="form-field">
+            <label for="brand">Brand</label>
+            <input id="brand" type="text" formControlName="brand" placeholder="e.g. Northstar" required>
+        </div>
+
+        <div class="form-field form-field-wide">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description" rows="3" maxlength="40"
+                placeholder="A short description (up to 40 characters)" required></textarea>
+        </div>
+
+        <div class="form-field">
+            <label for="category">Category</label>
+            <input id="category" type="text" formControlName="category" placeholder="e.g. Accessories" required>
+        </div>
+
+        <div class="form-field">
+            <label for="stockQuantity">Stock</label>
+            <input id="stockQuantity" type="number" formControlName="stockQuantity" min="0.1" step="1"
+                placeholder="0" required>
+        </div>
+
+        <div class="form-field">
+            <label for="price">Selling price</label>
+            <div class="input-with-prefix">
+                <span aria-hidden="true">sh</span>
+                <input id="price" type="number" formControlName="price" min="0.1" step="0.01" placeholder="0.00"
+                    required>
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label for="originalPrice">Buying price</label>
+            <div class="input-with-prefix">
+                <span aria-hidden="true">sh</span>
+                <input id="originalPrice" type="number" formControlName="originalPrice" min="0.1" step="0.01"
+                    placeholder="0.00" required>
+            </div>
+        </div>
+
+        <div class="form-field form-field-wide">
+            <label for="pictureUrl">Image URL</label>
+            <input id="pictureUrl" type="url" formControlName="pictureUrl"
+                placeholder="https://example.com/product-image.jpg" aria-describedby="pictureUrl-help" required>
+            <small id="pictureUrl-help">Use a publicly accessible image URL. Uploading an image file is not supported.</small>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" [disabled]="formGroup.invalid">
+                {{ editingId ? 'Save changes' : 'Create product' }}
+            </button>
+        </div>
+    </form>
+</section>

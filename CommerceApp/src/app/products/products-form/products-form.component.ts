@@ -18,12 +18,11 @@ export class ProductsFormComponent implements OnInit {
   editingId: number | null = null;
 
   constructor(
-    private productsService: ProductsServiceService, 
+    private productsService: ProductsServiceService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
-  ) 
-  {
+  ) {
     this.formGroup = fb.group({
       name: ['', Validators.required],
       description: ['', [
@@ -35,6 +34,7 @@ export class ProductsFormComponent implements OnInit {
         Validators.required,
         Validators.min(0.1)
       ]],
+      category: ['', Validators.required],
       originalPrice: [0, [
         Validators.required,
         Validators.min(0.1)
@@ -50,12 +50,11 @@ export class ProductsFormComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    if(!id)
-    {
+    if (!id) {
       return;
     }
 
-    this.editingId =+ id; //convert id from string to int
+    this.editingId = + id; //convert id from string to int
     this.productsService.getProductById(this.editingId).subscribe({
       next: (product) => {
         this.formGroup.patchValue(product);
@@ -66,10 +65,8 @@ export class ProductsFormComponent implements OnInit {
     });
   }
 
-  onSubmit(): void
-  {
-    if(this.formGroup.invalid)
-    {
+  onSubmit(): void {
+    if (this.formGroup.invalid) {
       return;
     }
 
@@ -79,7 +76,7 @@ export class ProductsFormComponent implements OnInit {
       id: this.editingId,
       ...product
     })
-    : this.productsService.createProduct(product);
+      : this.productsService.createProduct(product);
 
     request.subscribe({
       next: () => {
