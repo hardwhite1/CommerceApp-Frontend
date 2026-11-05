@@ -1,1 +1,50 @@
-<p>products-list works!</p>
+<section class="products-container">
+
+    <header class="products-header">
+        <div>
+            <h2>Our Products</h2>
+            <p>Explore our available products.</p>
+        </div>
+    </header>
+
+    <div class="products-grid">
+
+        <article class="product-card" *ngFor="let product of products">
+
+            <div class="product-image">
+                <img [src]="product.pictureUrl"
+                     [alt]="product.name">
+            </div>
+
+            <div class="product-content">
+
+                <span class="product-category">
+                    {{ product.category }}
+                </span>
+
+                <h3>{{ product.name }}</h3>
+
+                <p class="product-brand">
+                    {{ product.brand }}
+                </p>
+
+                <div class="product-footer">
+
+                    <span class="product-price">
+                        {{ product.price | currency }}
+                    </span>
+
+                    <a [routerLink]="['/products-details', product.id]"
+                       class="details-btn">
+                        View Details
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>

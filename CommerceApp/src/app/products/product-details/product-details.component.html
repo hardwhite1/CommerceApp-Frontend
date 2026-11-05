@@ -1,1 +1,26 @@
-<p>product-details works!</p>
+<section class="product-details" *ngIf="product">
+
+    <div class="details-image">
+        <img [src]="product.pictureUrl" [alt]="product.name">
+    </div>
+
+    <div class="details-content">
+        <span>{{ product.category }}</span>
+
+        <h2>{{ product.name }}</h2>
+
+        <p class="brand">{{ product.brand }}</p>
+
+        <p>{{ product.description }}</p>
+
+        <h3>{{ product.price | currency}}</h3>
+
+        <p>Available stock: {{ product.stockQuantity }}</p>
+
+        <p>Original price: {{ product.originalPrice | currency}}</p>
+
+        <a routerLink="/products-list">Back to products</a>
+
+    </div>
+
+</section>

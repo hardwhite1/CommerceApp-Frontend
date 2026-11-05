@@ -11,20 +11,23 @@ import { ProductsServiceService } from 'src/app/services/products-service.servic
 })
 export class ProductDetailsComponent implements OnInit {
 
-  products: Products[] = [];
+  product?: Products;
 
   constructor(private route: ActivatedRoute, private productsService: ProductsServiceService) { }
 
   ngOnInit(): void {
-    this.productsService.getAllProducts().subscribe({
-      next: (data) => {
-        this.products = data;
-        console.log("Products received", this.products)
-      },
-      error: (err) =>{
-        console.error("An error has occured", err)
-      }
 
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.productsService.getProductById(id).subscribe({
+      next: (data) => {
+        this.product = data;
+      },
+      error: err => {
+        console.error(err)
+      },
+      complete: () => {
+        console.log("Product fetched", this.product)
+      }
     });
   }
 
