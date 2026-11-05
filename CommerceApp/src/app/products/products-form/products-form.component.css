@@ -1,0 +1,254 @@
+
+:host {
+    display: block;
+    min-height: 100vh;
+    padding: 3.5rem 1.5rem;
+    box-sizing: border-box;
+    color: #172033;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background:
+        radial-gradient(circle at 10% 10%, #eaf2ff 0, transparent 35%),
+        linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+/* Main card */
+.product-form-card {
+    width: min(100%, 720px);
+    margin: 0 auto;
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    box-shadow:
+        0 4px 6px rgb(15 23 42 / 2%),
+        0 15px 40px rgb(15 23 42 / 6%);
+    transition: box-shadow 0.25s ease;
+}
+
+.product-form-card:hover {
+    box-shadow:
+        0 6px 12px rgb(15 23 42 / 3%),
+        0 20px 50px rgb(15 23 42 / 8%);
+}
+
+/* Header */
+.form-header {
+    margin-bottom: 2.25rem;
+}
+
+.form-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 0.85rem;
+    padding: 0.4rem 0.75rem;
+    color: #1d4ed8;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.form-header h2 {
+    margin: 0;
+    color: #111827;
+    font-size: clamp(1.6rem, 4vw, 2rem);
+    font-weight: 750;
+    letter-spacing: -0.045em;
+    line-height: 1.2;
+}
+
+.form-intro {
+    margin: 0.75rem 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Form layout */
+.product-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1.25rem;
+}
+
+.form-field {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.form-field-wide {
+    grid-column: 1 / -1;
+}
+
+/* Labels */
+.form-field label {
+    color: #334155;
+    font-size: 0.82rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+}
+
+/* Inputs */
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    min-height: 3.1rem;
+    box-sizing: border-box;
+    padding: 0.85rem 1rem;
+    color: #1e293b;
+    background: #f8fafc;
+    border: 1px solid #dbe3ee;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.875rem;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: #94a3b8;
+    font-size: 0.82rem;
+}
+
+.form-field textarea {
+    min-height: 7rem;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+/* Focus state */
+.form-field input:hover,
+.form-field textarea:hover {
+    border-color: #a5b4fc;
+    background: #ffffff;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgb(59 130 246 / 12%);
+}
+
+/* Validation feedback */
+.form-field input.ng-invalid.ng-touched,
+.form-field textarea.ng-invalid.ng-touched {
+    border-color: #ef4444;
+    background: #fffafa;
+    box-shadow: 0 0 0 3px rgb(239 68 68 / 8%);
+}
+
+.form-field small {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+/* Currency input */
+.input-with-prefix {
+    position: relative;
+}
+
+.input-with-prefix > span {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.input-with-prefix input {
+    padding-left: 2rem;
+}
+
+/* Footer / Action */
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #edf1f6;
+}
+
+.form-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.1rem;
+    min-width: 150px;
+    padding: 0.85rem 1.5rem;
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 650;
+    box-shadow: 0 4px 10px rgb(37 99 235 / 20%);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.form-actions button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    box-shadow: 0 7px 16px rgb(37 99 235 / 28%);
+    transform: translateY(-2px);
+}
+
+.form-actions button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.form-actions button:focus-visible {
+    outline: 3px solid rgb(59 130 246 / 35%);
+    outline-offset: 3px;
+}
+
+.form-actions button:disabled {
+    color: #ffffff;
+    background: #a5b4c8;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* Responsive layout */
+@media (max-width: 600px) {
+    :host {
+        padding: 1.5rem 0.85rem;
+    }
+
+    .product-form-card {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    .product-form {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+
+    .form-field-wide,
+    .form-actions {
+        grid-column: auto;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}
