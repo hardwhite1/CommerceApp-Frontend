@@ -5,6 +5,7 @@ import { ProductsServiceService } from 'src/app/services/products-service.servic
 import { CartsServiceService } from 'src/app/services/carts-service.service';
 import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product-details',
@@ -25,6 +26,7 @@ export class ProductDetailsComponent implements OnInit {
     private productsService: ProductsServiceService,
     private cartsService: CartsServiceService,
     private router: Router,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -99,11 +101,18 @@ export class ProductDetailsComponent implements OnInit {
       finalize(() => this.isAddingToCart = false)
     ).subscribe({
       next: ()=>{
-        alert('Product successfully added to cart');
+        this.snackBar.open('Product added to your cart successfully!', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top'
+        });
+        this.router.navigate(['checkout'])
       },
       error: err=>{
         console.error(err);
-        alert('Unable to add this product to your cart. Please try again.');
+        this.snackBar.open('Unable to add this product to your cart. Please try again.', 'Close', {
+          duration: 5000
+        });
       }
     });
   }
