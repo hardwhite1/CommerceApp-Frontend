@@ -102,7 +102,7 @@ export class ProductDetailsComponent implements OnInit {
     ).subscribe({
       next: ()=>{
         this.snackBar.open('Product added to your cart successfully!', 'Close', {
-          duration: 3000,
+          duration: 2000,
           horizontalPosition: 'end',
           verticalPosition: 'top'
         });
