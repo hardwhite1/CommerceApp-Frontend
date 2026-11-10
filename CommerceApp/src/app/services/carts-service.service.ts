@@ -24,6 +24,11 @@ export class CartsServiceService {
     return this.httpClient.get<Carts>(`${environment.apiUrl}/Carts/${id}`);
   }
 
+  createCart(): Observable<Carts>
+  {
+    return this.httpClient.post<Carts>(`${environment.apiUrl}/Carts`, {});
+  }
+
   AddItemsToCart(cartId: number, productId: number, quantity: number): Observable<Carts>
   {
     return this.httpClient.post<Carts>(`${environment.apiUrl}/Carts/${cartId}/items`,

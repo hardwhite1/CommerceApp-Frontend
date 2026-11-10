@@ -1,25 +1,113 @@
+
 <section class="product-details" *ngIf="product">
 
+    <!-- Product Image -->
     <div class="details-image">
-        <img [src]="product.pictureUrl" [alt]="product.name">
+        <img
+            [src]="product.pictureUrl"
+            [alt]="product.name">
     </div>
 
+    <!-- Product Information -->
     <div class="details-content">
-        <span>{{ product.category }}</span>
+
+        <div class="product-meta">
+            <span class="category-badge">
+                {{ product.category }}
+            </span>
+
+            <span class="product-id">
+                PRODUCT #{{ product.id }}
+            </span>
+        </div>
 
         <h2>{{ product.name }}</h2>
 
-        <p class="brand">{{ product.brand }}</p>
+        <p class="brand">
+            By {{ product.brand }}
+        </p>
 
-        <p>{{ product.description }}</p>
+        <p class="description">
+            {{ product.description }}
+        </p>
 
-        <h3>{{ product.price | currency}}</h3>
+        <!-- Pricing -->
+        <div class="pricing">
+            <h3>{{ product.price | currency }}</h3>
 
-        <p>Available stock: {{ product.stockQuantity }}</p>
+            <span class="original-price">
+                {{ product.originalPrice | currency }}
+            </span>
+        </div>
 
-        <p>Original price: {{ product.originalPrice | currency}}</p>
+        <!-- Stock -->
+        <div class="stock-status"
+             [class.out-of-stock]="product.stockQuantity <= 0">
 
-        <a routerLink="/products-list">Back to products</a>
+            <span class="stock-indicator"></span>
+
+            {{ product.stockQuantity > 0
+                ? product.stockQuantity + ' units available'
+                : 'Out of stock' }}
+
+        </div>
+
+        <!-- Cart Actions -->
+        <div class="cart-actions">
+
+            <div class="quantity-control">
+                <label for="quantity">Quantity</label>
+
+                <input
+                    id="quantity"
+                    type="number"
+                    [(ngModel)]="quantity"
+                    min="1"
+                    [max]="product.stockQuantity">
+            </div>
+
+            <button
+                class="add-cart-btn"
+                (click)="addItemToCart()"
+                [disabled]="isAddingToCart ||
+                            product.stockQuantity <= 0 ||
+                            quantity < 1 ||
+                            quantity > product.stockQuantity">
+
+                {{ isAddingToCart ? 'Adding...' : 'Add to Cart' }}
+            </button>
+
+        </div>
+
+        <!-- Administrative Actions -->
+        <div class="admin-actions">
+
+            <p>PRODUCT MANAGEMENT</p>
+
+            <div class="admin-buttons">
+
+                <button
+                    class="edit-btn"
+                    [routerLink]="['/products-form', product.id]">
+
+                    Edit Product
+                </button>
+
+                <button
+                    class="delete-btn"
+                    (click)="deleteProduct()">
+
+                    Delete Product
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Navigation -->
+        <a routerLink="/products-list" class="back-link">
+            ← Back to Products
+        </a>
 
     </div>
 

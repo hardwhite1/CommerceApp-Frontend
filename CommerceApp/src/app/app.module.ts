@@ -14,7 +14,7 @@ import { OrdersComponent } from './cart/orders/orders.component';
 import { PaymentsComponent } from './payments/payments/payments.component';
 import { WelcomePageComponent } from './welcome/welcome-page/welcome-page.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +33,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule
   ],
   providers: [],
