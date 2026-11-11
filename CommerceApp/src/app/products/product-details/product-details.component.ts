@@ -106,7 +106,7 @@ export class ProductDetailsComponent implements OnInit {
           horizontalPosition: 'end',
           verticalPosition: 'top'
         });
-        this.router.navigate(['checkout'])
+        this.router.navigate(['checkout/', this.cartId]);
       },
       error: err=>{
         console.error(err);

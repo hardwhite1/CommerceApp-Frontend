@@ -56,4 +56,9 @@ export class CartsServiceService {
   {
       return this.httpClient.delete<void>(`${environment.apiUrl}/carts/${cartId}/items`);
   }
+
+  getCartItems(cartId: number): Observable<CartItems[]>
+  {
+    return this.httpClient.get<CartItems[]>(`${environment.apiUrl}/Carts/${cartId}/items`);
+  }
 }
