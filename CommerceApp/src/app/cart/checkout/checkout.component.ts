@@ -4,6 +4,8 @@ import { CartsServiceService } from 'src/app/services/carts-service.service';
 import { Router } from '@angular/router';
 import { Route } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { error } from 'console';
 
 @Component({
   selector: 'app-checkout',
@@ -12,15 +14,49 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CheckoutComponent implements OnInit {
 
-  cartItems: CartItems[] = []
-  //cartId: number | null = null
+  cartItems: CartItems[] = [];
+  cartId: number | null = null
+  shippingFee = 200;
+  paymentMethod = 'mpesa';
+  isCheckingOut = false;
+  shippingForm!: FormGroup;
 
-  constructor(private cartsService: CartsServiceService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private cartsService: CartsServiceService, 
+    private route: ActivatedRoute,
+    private fb: FormBuilder, 
+    private router: Router) 
+    { }
 
   ngOnInit(): void {
+
+    //Initialize the shipping form with form controls and validators
+    this.shippingForm = this.fb.group({
+      fullName: ['', Validators.required],
+      email: ['', Validators.required, Validators.email],
+      address: ['', Validators.required],
+      city: ['', Validators.required],
+      state: [''],
+      zipCode: ['']
+    });
+
     const cartId = Number(this.route.snapshot.paramMap.get('cartId'));
 
-    this.cartsService.getCartItems(cartId).subscribe({
+    if(Number.isSafeInteger(cartId) && cartId > 0)
+    {
+      this.cartId = cartId;
+      this.loadCartItems();
+    }
+  }
+
+  //load cartItems
+  loadCartItems(): void
+  {
+      if(this.cartId == null)
+      {
+        return;
+      }
+      this.cartsService.getCartItems(this.cartId).subscribe({
       next: (items) =>{
         this.cartItems = items;
       },
@@ -33,11 +69,79 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  // getCartItems(): void
-  // {
-  //   return this.cartsService.getCartItems(this.cartId).subscribe({
+  //Calculate sub-total
+  get subTotal(): number
+  {
+    return this.cartItems.reduce((total, item) =>
+      total + (item.price * item.quantity), 0
+    );
+  }
 
-  //   });
-  // }
+  //calculate grand-total
+  get grandTotal(): number
+  {
+    return this.subTotal + this.shippingFee;
+  }
+
+  //increase quantity
+  increaseQuantity(item: CartItems): void
+  {
+    if(this.cartId == null) return;
+
+    this.cartsService.AddItemsToCart(this.cartId, item.productId, 1).subscribe({
+      next: () => this.loadCartItems(),
+      error: (err) => console.error(err)
+    });
+  }
+
+  //Decrease quantity
+  decreaseQuantity(item: CartItems): void
+  {
+    if(item.quantity <= 1 || this.cartId == null) return;
+    this.cartsService.UpdateCart(this.cartId, item.id, item.quantity - 1).subscribe({
+      next: () => this.loadCartItems(),
+      error: (err) => console.error(err)
+    });
+  }
+
+  //Remove item
+  removeItem(item: CartItems): void
+  {
+    if(this.cartId == null) return;
+
+    this.cartsService.RemoveItemFromCart(item.id, this.cartId).subscribe({
+      next: () => this.loadCartItems(),
+      error: (err) => console.error(err)
+    });
+  }
+
+  //select payment method
+  selectPaymentMethod(method: string): void
+  {
+    this.paymentMethod = method;
+  }
+
+  //checkout
+  checkout(): void
+  {
+    if(this.shippingForm.invalid || this.cartItems.length === 0)
+    {
+      return this.shippingForm.markAllAsTouched();
+    }
+
+      const orderData = 
+      {
+        cartId: this.cartId,
+        shippingInformation: this.shippingForm.value,
+        paymentMethod: this.paymentMethod,
+        totalAmount: this.grandTotal
+      };
+
+      console.log('checkout data', orderData)
+
+      //Todo, sent orderData to your backend
+  }
+
+  
 
 }

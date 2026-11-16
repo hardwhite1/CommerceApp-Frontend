@@ -1,50 +1,55 @@
-<section class="products-container">
 
-    <header class="products-header">
-        <div>
-            <h2>Our Products</h2>
-            <p>Explore our available products.</p>
-        </div>
-    </header>
+<div class="products-frame">
 
-    <div class="products-grid">
+    <section class="products-container">
 
-        <article class="product-card" *ngFor="let product of products">
-
-            <div class="product-image">
-                <img [src]="product.pictureUrl"
-                     [alt]="product.name">
+        <header class="products-header">
+            <div>
+                <h2>Our Products</h2>
+                <p>Explore our available products.</p>
             </div>
+        </header>
 
-            <div class="product-content">
+        <div class="products-grid">
 
-                <span class="product-category">
-                    {{ product.category }}
-                </span>
+            <article class="product-card" *ngFor="let product of products">
 
-                <h3>{{ product.name }}</h3>
+                <div class="product-image">
+                    <img [src]="product.pictureUrl"
+                         [alt]="product.name">
+                </div>
 
-                <p class="product-brand">
-                    {{ product.brand }}
-                </p>
+                <div class="product-content">
 
-                <div class="product-footer">
-
-                    <span class="product-price">
-                        {{ product.price | currency }}
+                    <span class="product-category">
+                        {{ product.category }}
                     </span>
 
-                    <a [routerLink]="['/products-details', product.id]"
-                       class="details-btn">
-                        View Details
-                    </a>
+                    <h3>{{ product.name }}</h3>
+
+                    <p class="product-brand">
+                        {{ product.brand }}
+                    </p>
+
+                    <div class="product-footer">
+
+                        <span class="product-price">
+                            {{ product.price | currency }}
+                        </span>
+
+                        <a [routerLink]="['/products-details', product.id]"
+                           class="details-btn">
+                            View Details
+                        </a>
+
+                    </div>
 
                 </div>
 
-            </div>
+            </article>
 
-        </article>
+        </div>
 
-    </div>
+    </section>
 
-</section>
+</div>
