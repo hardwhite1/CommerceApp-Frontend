@@ -6,6 +6,7 @@ import { CartsServiceService } from 'src/app/services/carts-service.service';
 import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CartItems } from 'src/app/models/cart-items.model';
 
 @Component({
   selector: 'app-product-details',
@@ -14,10 +15,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  product?: Products;
+  product: Products | null = null;
   cartId: number | null = null;
   quantity: number = 1;
   isAddingToCart = false;
+  cartItems: CartItems[] = [];
 
   private readonly cartStorageKey = 'commerceApp.cartId';
 
@@ -29,23 +31,87 @@ export class ProductDetailsComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
+  get cartQuantityForCurrentProduct(): number {
+    const product = this.product;
+    if (!product) {
+      return 0;
+    }
+
+    return this.cartItems
+      .filter(item => item.productId === product.id)
+      .reduce((total, item) => total + item.quantity, 0);
+  }
+
+  get availableStock(): number {
+    if (!this.product) {
+      return 0;
+    }
+
+    return Math.max(0, this.product.stockQuantity - this.cartQuantityForCurrentProduct);
+  }
+
   ngOnInit(): void {
     const storedCartId = Number(localStorage.getItem(this.cartStorageKey));
     if (Number.isSafeInteger(storedCartId) && storedCartId > 0) {
       this.cartId = storedCartId;
+      this.loadCartItems();
     }
 
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = Number(idParam);
+
+    if (!idParam || !Number.isFinite(id) || id <= 0) {
+      this.router.navigate(['/products-list']);
+      return;
+    }
 
     this.productsService.getProductById(id).subscribe({
       next: (data) => {
-        this.product = data;
+        this.product = data ?? null;
+
+        if (!this.product) {
+          this.snackBar.open('Product not found.', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top'
+          });
+          this.router.navigate(['/products-list']);
+          return;
+        }
+
+        this.quantity = Math.min(this.quantity, this.availableStock || 1);
       },
       error: err => {
-        console.error(err)
+        console.error(err);
+        this.snackBar.open('Unable to load this product right now.', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top'
+        });
+        this.router.navigate(['/products-list']);
       },
       complete: () => {
-        console.log("Product fetched", this.product)
+        console.log("Product fetched", this.product);
+      }
+    });
+  }
+
+  loadCartItems(): void {
+    if (this.cartId === null) {
+      this.cartItems = [];
+      return;
+    }
+
+    this.cartsService.getCartItems(this.cartId).subscribe({
+      next: (items) => {
+        this.cartItems = items ?? [];
+
+        if (this.product) {
+          this.quantity = Math.min(this.quantity, this.availableStock || 1);
+        }
+      },
+      error: err => {
+        console.error(err);
       }
     });
   }
@@ -82,6 +148,18 @@ export class ProductDetailsComponent implements OnInit {
       return;
     }
 
+    const normalizedQuantity = Number.isFinite(this.quantity) ? Math.trunc(this.quantity) : 0;
+    const availableQuantity = this.availableStock;
+
+    if (normalizedQuantity < 1 || normalizedQuantity > availableQuantity) {
+      this.snackBar.open('Please select a valid quantity for this product.', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top'
+      });
+      return;
+    }
+
     const product = this.product;
     const cartId$ = this.cartId === null
       ? this.cartsService.createCart().pipe(
@@ -96,17 +174,17 @@ export class ProductDetailsComponent implements OnInit {
     this.isAddingToCart = true;
     cartId$.pipe(
       switchMap(cartId =>
-        this.cartsService.AddItemsToCart(cartId, product.id, this.quantity)
+        this.cartsService.AddItemsToCart(cartId, product.id, normalizedQuantity)
       ),
       finalize(() => this.isAddingToCart = false)
     ).subscribe({
       next: ()=>{
         this.snackBar.open('Product added to your cart successfully!', 'Close', {
-          duration: 2000,
+          duration: 5000,
           horizontalPosition: 'end',
           verticalPosition: 'top'
         });
-        this.router.navigate(['checkout'])
+        this.router.navigate(['checkout/', this.cartId]);
       },
       error: err=>{
         console.error(err);

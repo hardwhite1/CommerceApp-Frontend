@@ -38,7 +38,7 @@ export class CartsServiceService {
 
   UpdateCart(cartId: number, productId: number, quantity: number): Observable<Carts>
   {
-    return this.httpClient.put<Carts>(`${environment.apiUrl}/Carts/${cartId}items/${productId}`,
+    return this.httpClient.put<Carts>(`${environment.apiUrl}/carts/${cartId}/items/${productId}`,
       {quantity}
     );
   }
@@ -55,5 +55,10 @@ export class CartsServiceService {
   ClearCart(cartId: number): Observable<void>
   {
       return this.httpClient.delete<void>(`${environment.apiUrl}/carts/${cartId}/items`);
+  }
+
+  getCartItems(cartId: number): Observable<CartItems[]>
+  {
+    return this.httpClient.get<CartItems[]>(`${environment.apiUrl}/Carts/${cartId}/items`);
   }
 }

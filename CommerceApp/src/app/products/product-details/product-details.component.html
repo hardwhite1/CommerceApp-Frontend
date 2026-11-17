@@ -42,12 +42,12 @@
 
         <!-- Stock -->
         <div class="stock-status"
-             [class.out-of-stock]="product.stockQuantity <= 0">
+             [class.out-of-stock]="availableStock <= 0">
 
             <span class="stock-indicator"></span>
 
-            {{ product.stockQuantity > 0
-                ? product.stockQuantity + ' units available'
+            {{ availableStock > 0
+                ? availableStock + ' units available'
                 : 'Out of stock' }}
 
         </div>
@@ -63,16 +63,16 @@
                     type="number"
                     [(ngModel)]="quantity"
                     min="1"
-                    [max]="product.stockQuantity">
+                    [max]="availableStock || 1">
             </div>
 
             <button
                 class="add-cart-btn"
                 (click)="addItemToCart()"
                 [disabled]="isAddingToCart ||
-                            product.stockQuantity <= 0 ||
+                            availableStock <= 0 ||
                             quantity < 1 ||
-                            quantity > product.stockQuantity">
+                            quantity > availableStock">
 
                 {{ isAddingToCart ? 'Adding...' : 'Add to Cart' }}
             </button>

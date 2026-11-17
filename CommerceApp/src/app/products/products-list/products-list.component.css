@@ -138,3 +138,30 @@
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
 }
+
+
+/* Main frame enclosing all products */
+.products-frame {
+    max-width: 1300px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* Products container */
+.products-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Responsive frame */
+@media (max-width: 600px) {
+    .products-frame {
+        margin: 1rem auto;
+        padding: 1rem;
+        border-radius: 14px;
+    }
+}

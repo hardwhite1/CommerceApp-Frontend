@@ -43,6 +43,9 @@ const routes: Routes = [
     path: 'checkout', component: CheckoutComponent
   },
   {
+    path: 'checkout/:cartId', component: CheckoutComponent
+  },
+  {
     path: 'my-orders', component: OrdersComponent
   },
   {
