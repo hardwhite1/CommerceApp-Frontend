@@ -98,18 +98,19 @@ export class CheckoutComponent implements OnInit {
   decreaseQuantity(item: CartItems): void
   {
     if(item.quantity <= 1 || this.cartId == null) return;
-    this.cartsService.UpdateCart(this.cartId, item.id, item.quantity - 1).subscribe({
+    this.cartsService.UpdateCart(this.cartId, item.productId, item.quantity - 1).subscribe({
       next: () => this.loadCartItems(),
       error: (err) => console.error(err)
     });
   }
+  
 
   //Remove item
   removeItem(item: CartItems): void
   {
     if(this.cartId == null) return;
 
-    this.cartsService.RemoveItemFromCart(item.id, this.cartId).subscribe({
+    this.cartsService.RemoveItemFromCart(this.cartId, item.productId).subscribe({
       next: () => this.loadCartItems(),
       error: (err) => console.error(err)
     });
