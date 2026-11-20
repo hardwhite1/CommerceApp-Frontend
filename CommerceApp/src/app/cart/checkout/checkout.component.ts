@@ -190,6 +190,7 @@ export class CheckoutComponent implements OnInit {
     mpesaPhone?.updateValueAndValidity();
   }
 
+  
   //checkout
   checkout(): void
   {
