@@ -165,3 +165,31 @@
         border-radius: 14px;
     }
 }
+
+/* Section heading with icon */
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.section-heading h3 {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.heading-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: #e9f7ef;
+  color: #198754;
+  border-radius: 10px;
+}

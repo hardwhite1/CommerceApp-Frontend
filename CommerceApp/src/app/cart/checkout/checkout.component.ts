@@ -28,16 +28,22 @@ export class CheckoutComponent implements OnInit {
     private router: Router) 
     { }
 
+  get cartQuantity(): number {
+    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
+  }
+
   ngOnInit(): void {
 
     //Initialize the shipping form with form controls and validators
     this.shippingForm = this.fb.group({
       fullName: ['', Validators.required],
       email: ['', Validators.required, Validators.email],
+      phoneNumber: ['', Validators.maxLength(15), Validators.pattern(/^\+?\d{10,15}$/), Validators.required, Validators.minLength(10)],
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: [''],
-      zipCode: ['']
+      zipCode: [''],
+      pickUpLocation: ['', Validators.required]
     });
 
     const cartId = Number(this.route.snapshot.paramMap.get('cartId'));
