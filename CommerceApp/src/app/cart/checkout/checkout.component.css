@@ -578,3 +578,86 @@
 .payment-security svg {
   color: #198754;
 }
+
+
+/* Form groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Mandatory asterisk */
+.required {
+  color: #e53935;
+  font-weight: bold;
+  margin-left: 3px;
+}
+
+/* Inputs and dropdowns */
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #1976d2;
+}
+
+/* Validation errors */
+.error {
+  color: #e53935;
+  font-size: 12px;
+}
+
+.hint {
+  color: #777;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Form grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* M-Pesa details */
+.mpesa-details {
+  margin-top: 20px;
+  padding: 18px;
+  background: #f8faf8;
+  border: 1px solid #dce8dc;
+  border-radius: 8px;
+}
+
+.mpesa-details h4 {
+  margin: 0 0 15px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

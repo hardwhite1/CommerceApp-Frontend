@@ -20,6 +20,32 @@ export class CheckoutComponent implements OnInit {
   paymentMethod = 'mpesa';
   isCheckingOut = false;
   shippingForm!: FormGroup;
+  nairobiEstates: string[] = [
+    'Westlands',
+    'Kilimani',
+    'Kileleshwa',
+    'Lavington',
+    'Karen',
+    'Runda',
+    'Muthaiga',
+    'Parklands',
+    'South B',
+    'South C',
+    'Langata',
+    'Ngong Road',
+    'Roysambu',
+    'Kasarani',
+    'Thika Road',
+    'Donholm',
+    'Umoja',
+    'Buruburu',
+    'Embakasi',
+    'Ruaka',
+    'Kahawa West',
+    'Kahawa Sukari',
+    'Komarock',
+    'Syokimau'
+  ];
 
   constructor(
     private cartsService: CartsServiceService, 
@@ -34,25 +60,45 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //Initialize the shipping form with form controls and validators
     this.shippingForm = this.fb.group({
+
       fullName: ['', Validators.required],
-      email: ['', Validators.required, Validators.email],
-      phoneNumber: ['', Validators.maxLength(15), Validators.pattern(/^\+?\d{10,15}$/), Validators.required, Validators.minLength(10)],
+
+      email: ['', [
+        Validators.required,
+        Validators.email
+      ]],
+
+      phoneNumber: ['', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(15),
+        Validators.pattern(/^\+?\d{10,15}$/)
+      ]],
+
       address: ['', Validators.required],
-      city: ['', Validators.required],
+
+      city: ['Nairobi', Validators.required],
+
       state: [''],
+
       zipCode: [''],
-      pickUpLocation: ['', Validators.required]
+
+      pickUpLocation: ['', Validators.required],
+
+      mpesaPhoneNumber: ['']
+
     });
 
-    const cartId = Number(this.route.snapshot.paramMap.get('cartId'));
+    const cartId = Number(
+      this.route.snapshot.paramMap.get('cartId')
+    );
 
-    if(Number.isSafeInteger(cartId) && cartId > 0)
-    {
+    if (Number.isSafeInteger(cartId) && cartId > 0) {
       this.cartId = cartId;
       this.loadCartItems();
     }
+
   }
 
   //load cartItems
@@ -126,6 +172,22 @@ export class CheckoutComponent implements OnInit {
   selectPaymentMethod(method: string): void
   {
     this.paymentMethod = method;
+    const mpesaPhone = this.shippingForm.get('mpesaPhoneNumber');
+    if(method == 'mpesa')
+    {
+      mpesaPhone?.setValidators([
+        Validators.required,
+        Validators.pattern(/^\+?\d{10,15}$/),
+        Validators.minLength(10),
+        Validators.maxLength(15)
+      ]);
+    }
+    else
+    {
+      mpesaPhone?.clearValidators();
+      mpesaPhone?.reset('');
+    }
+    mpesaPhone?.updateValueAndValidity();
   }
 
   //checkout
@@ -133,7 +195,8 @@ export class CheckoutComponent implements OnInit {
   {
     if(this.shippingForm.invalid || this.cartItems.length === 0)
     {
-      return this.shippingForm.markAllAsTouched();
+      this.shippingForm.markAllAsTouched();
+      return;
     }
 
       const orderData = 
@@ -141,7 +204,10 @@ export class CheckoutComponent implements OnInit {
         cartId: this.cartId,
         shippingInformation: this.shippingForm.value,
         paymentMethod: this.paymentMethod,
+        mpesaPhoneNumber:
+          this.paymentMethod === 'mpesa' ? this.shippingForm.get('mpesaPhoneNumber')?.value : null,
         totalAmount: this.grandTotal
+        //remember to add payment reference when integrating with payment gateway
       };
 
       console.log('checkout data', orderData)
