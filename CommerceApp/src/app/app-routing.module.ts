@@ -19,6 +19,9 @@ const routes: Routes = [
     path: 'register', component: RegisterComponent
   },
   {
+    path: '', redirectTo: '/welcome', pathMatch: 'full'
+  },
+  {
     path: 'welcome', component: WelcomePageComponent
   },
   {
