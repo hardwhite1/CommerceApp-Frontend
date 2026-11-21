@@ -119,102 +119,221 @@
       </section>
 
 
-      <!-- SHIPPING INFORMATION -->
-      <section class="checkout-section">
+     
+      <!-- CHECKOUT FORM -->
+      <form [formGroup]="shippingForm">
 
-        <h3>Shipping Information</h3>
+        <!-- SHIPPING INFORMATION -->
+        <section class="checkout-section">
 
-        <form [formGroup]="shippingForm">
+          <h3>Shipping Information</h3>
 
           <div class="form-grid">
 
-            <input
-              type="text"
-              placeholder="Full Name"
-              formControlName="fullName">
+            <!-- Full Name -->
+            <div class="form-group">
+              <label>
+                Full Name <span class="required">*</span>
+              </label>
 
-            <input
-              type="email"
-              placeholder="Email Address"
-              formControlName="email">
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                formControlName="fullName">
 
-            <input
-              type="tel"
-              placeholder="Phone"
-              formControlName="phoneNumber">
+              <small
+                class="error"
+                *ngIf="shippingForm.get('fullName')?.touched &&
+                      shippingForm.get('fullName')?.hasError('required')">
+                Full name is required.
+              </small>
+            </div>
 
-            <input
-              type="text"
-              placeholder="Delivery Address"
-              formControlName="address">
+            <!-- Email -->
+            <div class="form-group">
+              <label>
+                Email Address <span class="required">*</span>
+              </label>
 
-            <input type="text"
-              placeholder="Pickup Station"
-              formControlName="pickUpStation">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                formControlName="email">
 
-            <input
-              type="text"
-              placeholder="City"
-              formControlName="city">
+              <small
+                class="error"
+                *ngIf="shippingForm.get('email')?.touched &&
+                      shippingForm.get('email')?.invalid">
+                Please enter a valid email address.
+              </small>
+            </div>
 
-            <input
-              type="text"
-              placeholder="State / County"
-              formControlName="state">
+            <!-- Phone Number -->
+            <div class="form-group">
+              <label>
+                Phone Number <span class="required">*</span>
+              </label>
 
-            <input
-              type="text"
-              placeholder="Postal Code"
-              formControlName="zipCode">
+              <input
+                type="tel"
+                placeholder="e.g. 0712345678"
+                formControlName="phoneNumber">
+
+              <small
+                class="error"
+                *ngIf="shippingForm.get('phoneNumber')?.touched &&
+                      shippingForm.get('phoneNumber')?.invalid">
+                Enter a valid phone number (10-15 digits).
+              </small>
+            </div>
+
+            <!-- Delivery Address -->
+            <div class="form-group">
+              <label>
+                Delivery Address <span class="required">*</span>
+              </label>
+
+              <input
+                type="text"
+                placeholder="House number, street, building..."
+                formControlName="address">
+            </div>
+
+            <!-- Pickup Location -->
+            <div class="form-group">
+              <label>
+                Pickup Location <span class="required">*</span>
+              </label>
+
+              <select formControlName="pickUpLocation">
+                <option value="" disabled>Select your estate</option>
+
+                <option
+                  *ngFor="let estate of nairobiEstates"
+                  [value]="estate">
+                  {{ estate }}
+                </option>
+              </select>
+            </div>
+
+            <!-- City -->
+            <div class="form-group">
+              <label>
+                City <span class="required">*</span>
+              </label>
+
+              <input
+                type="text"
+                placeholder="City"
+                formControlName="city">
+            </div>
+
+            <!-- County -->
+            <div class="form-group">
+              <label>County</label>
+
+              <input
+                type="text"
+                placeholder="e.g. Nairobi"
+                formControlName="state">
+            </div>
+
+            <!-- Postal Code -->
+            <div class="form-group">
+              <label>Postal Code</label>
+
+              <input
+                type="text"
+                placeholder="Postal code"
+                formControlName="zipCode">
+            </div>
 
           </div>
 
-        </form>
-
-      </section>
+        </section>
 
 
-      <!-- PAYMENT INFORMATION -->
-      <section class="checkout-section">
+        <!-- PAYMENT INFORMATION -->
+        <section class="checkout-section">
 
-        <h3>Payment Method</h3>
+          <h3>Payment Method</h3>
 
-        <div class="payment-options">
+          <div class="payment-options">
 
-          <label>
-            <input
-              type="radio"
-              name="paymentMethod"
-              [checked]="paymentMethod === 'mpesa'"
-              (change)="selectPaymentMethod('mpesa')">
+            <!-- M-Pesa -->
+            <label>
+              <input
+                type="radio"
+                name="paymentMethod"
+                [checked]="paymentMethod === 'mpesa'"
+                (change)="selectPaymentMethod('mpesa')">
 
-            M-Pesa
-          </label>
+              M-Pesa
+            </label>
 
-          <label>
-            <input
-              type="radio"
-              name="paymentMethod"
-              [checked]="paymentMethod === 'card'"
-              (change)="selectPaymentMethod('card')">
+            <!-- Card Payment -->
+            <label>
+              <input
+                type="radio"
+                name="paymentMethod"
+                [checked]="paymentMethod === 'card'"
+                (change)="selectPaymentMethod('card')">
 
-            Card Payment
-          </label>
+              Card Payment
+            </label>
 
-          <label>
-            <input
-              type="radio"
-              name="paymentMethod"
-              [checked]="paymentMethod === 'cod'"
-              (change)="selectPaymentMethod('cod')">
+            <!-- Cash on Delivery -->
+            <label>
+              <input
+                type="radio"
+                name="paymentMethod"
+                [checked]="paymentMethod === 'cod'"
+                (change)="selectPaymentMethod('cod')">
 
-            Cash on Delivery
-          </label>
+              Cash on Delivery
+            </label>
 
-        </div>
+          </div>
 
-      </section>
 
+          <!-- M-PESA PAYMENT DETAILS -->
+          <div
+            class="mpesa-details"
+            *ngIf="paymentMethod === 'mpesa'">
+
+            <h4>M-Pesa Payment Details</h4>
+
+            <div class="form-group">
+
+              <label>
+                M-Pesa Phone Number
+                <span class="required">*</span>
+              </label>
+
+              <input
+                type="tel"
+                placeholder="e.g. 0712345678"
+                formControlName="mpesaPhoneNumber">
+
+              <small
+                class="error"
+                *ngIf="shippingForm.get('mpesaPhoneNumber')?.touched &&
+                      shippingForm.get('mpesaPhoneNumber')?.invalid">
+                Please enter a valid M-Pesa phone number.
+              </small>
+
+              <small class="hint">
+                Enter the phone number registered with M-Pesa.
+                You will receive a payment prompt on your phone.
+              </small>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </form>
     </div>
 
 
